@@ -11,7 +11,7 @@ describe('snacks model', () => {
             let snack = await snacks.insert({name: 'Dried Fruits'});
             expect(snack).toEqual({
                 id: 1,
-                name: 'Dried Fruit'
+                name: 'Dried Fruits'
             })
 
             snack = await snacks.insert({name: 'Granola'});
@@ -31,7 +31,7 @@ describe('snacks model', () => {
             await snacks.insert({name: 'Granola'});
 
             const allSnacks = await snacks.getAll()
-            expect(allSnacks).arrayContaining([
+            expect(allSnacks).toEqual(expect.arrayContaining([
                 {
                     id: 1,
                     name: 'Dried Fruits'
@@ -41,7 +41,29 @@ describe('snacks model', () => {
                     name: 'Granola'
                 }
             ])
+            )
 
+        })
+    })
+
+    describe('findBy()', () => {
+        test('should find by given filter', async () => {
+            await snacks.insert({name: 'Dried Fruits'});
+            await snacks.insert({name: 'Granola'});
+
+            let id = 1
+            let snack = await snacks.findBy({id})
+            expect(snack).toEqual({
+                id: 1,
+                name: 'Dried Fruits'
+            })
+
+            id = 2
+            snack = await snacks.findBy({id})
+            expect(snack).toEqual({
+                id: 2,
+                name: 'Granola'
+            })
         })
     })
 
@@ -50,11 +72,12 @@ describe('snacks model', () => {
             await snacks.insert({name: 'Dried Fruits'});
             await snacks.insert({name: 'Granola'});
 
-            const id = 1
+            const id = 2
             await snacks.remove(id)
             
             const removedSnack = await snacks.findBy({id})
-            expect(removedSnack).toBeNull()
+            expect(removedSnack).toBeUndefined()
         })
     })
+
 })
