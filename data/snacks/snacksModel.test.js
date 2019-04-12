@@ -4,7 +4,7 @@ const snacks = require('./snacksModel');
 
 
 describe('snacks model', () => {
-    afterEach(() => db('snacks').truncate())
+    beforeEach(async () => db('snacks').truncate())
 
     describe('insert()', () => {
         test('should insert provided snack', async () => {

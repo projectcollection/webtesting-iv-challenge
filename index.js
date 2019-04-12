@@ -9,4 +9,9 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use('/snacks', snackRouters);
 
-app.listen(port);
+
+if (require.main == module) {
+    app.listen(port);
+} else {
+    module.exports = app
+}

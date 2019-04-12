@@ -1,11 +1,17 @@
 const request = require('supertest');
+const app = require('./index');
 
-const snackRouters = require('./snackRouters');
+const db = require('./data/dbconfig');
+
+beforeAll(async done => {
+    await db.seed.run();
+    done();
+})
 
 describe('snackRouters', () => {
     describe('POST /snacks', () => {
         test('should respond with 201', () => {
-            return request(snackRouters)
+            return request(app)
                 .post('/snacks')
                 .send({
                     name: "Fruit"
@@ -14,7 +20,7 @@ describe('snackRouters', () => {
         });
 
         test('should respond with json', () => {
-            return request(snackRouters)
+            return request(app)
                 .post('/snacks')
                 .send({
                     name: "Fruit"
@@ -25,14 +31,14 @@ describe('snackRouters', () => {
 
     describe('DELETE /snack', () => {
         test('should respond with 200', () => {
-            return request(snackRouters)
-                .del('/snacks/' + 1)
+            return request(app)
+                .del('/snacks/' + 2)
                 .expect(200)
         });
 
         test('should respond with json', () => {
-            return request(snackRouters)
-                .del('/snacks')
+            return request(app)
+                .del('/snacks/' + 1)
                 .expect('Content-Type', /json/)
         })
     })
